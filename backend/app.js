@@ -5,7 +5,7 @@ mongoose.connect('mongodb+srv://ohsand:12345@cluster0.uonbuyb.mongodb.net/?retry
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-const sauces = require('./models/sauces');
+//const sauces = require('./models/sauces');
 
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/stuff', saucesRoutes);
+app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
