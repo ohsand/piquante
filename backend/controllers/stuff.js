@@ -1,5 +1,5 @@
 const { textChangeRangeIsUnchanged } = require('typescript');
-const sauces = require('../models/sauces');
+const Sauce = require('../models/sauce');
 
 exports.createSauces = (req, res, next) => {
     /*delete req.body._id;
@@ -9,10 +9,18 @@ exports.createSauces = (req, res, next) => {
     sauces.save()
     .then(() => res.status(201).json({ message: "Objet enregistré"}))
     .catch(() => res.status(400).json({ error }));*/
-    const saucesObject = JSON.parse(req.body.sauces);
+    console.log('enter here ');
+    console.log('req 1.1 ? ' + JSON.stringify(req.body));
+    console.log('red ?' + req.body.sauce);
+
+   // {"sauce":"{\"name\":\"t\",\"manufacturer\":\"t\",\"description\":\"t\",\"mainPepper\":\"t\",\"heat\":1,\"userId\":\"62ff992955c783157f5f2f65\"}"}
+    
+     const saucesObject = JSON.parse(req.body.sauce);
+    console.log(saucesObject);
     delete saucesObject._id;
     delete saucesObject._userId;
-    const sauces = new sauces({
+    console.log('req ath ' + req.auth.userId);
+    const sauces = new Sauce({
       ...saucesObject,
       userId: req.auth.userId,
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -36,13 +44,14 @@ exports.deleteSauces = (req, res, next) => {
   };
 
 exports.getOneSauces = (req, res, next) => {
-  sauces.findOne({ _id: req.params.id })
+  Sauce.findOne({ _id: req.params.id })
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(404).json({ error }));
   };
 
 exports.getAllSauces = (req, res, next) => {
-  sauces.find()
+  console.log("finding sauces");
+  Sauce.find()
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({ error }));
   };
