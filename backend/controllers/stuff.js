@@ -5,11 +5,10 @@ const fs = require('fs');
 
 // creaate a new sauce
 exports.createSauces = (req, res, next) => {
-    console.log('enter here ');
+    /*console.log('enter here ');
     console.log('req 1.1 ? ' + JSON.stringify(req.body));
-    console.log('red ?' + req.body.sauce);
+    console.log('red ?' + req.body.sauce);*/
 
-   // {"sauce":"{\"name\":\"t\",\"manufacturer\":\"t\",\"description\":\"t\",\"mainPepper\":\"t\",\"heat\":1,\"userId\":\"62ff992955c783157f5f2f65\"}"}
     
      const saucesObject = JSON.parse(req.body.sauce);
     console.log(saucesObject);
@@ -76,17 +75,10 @@ exports.deleteSauces = (req, res, next) => {
     });
   };
 
-/*exports.getOneSauces = (req, res, next) => {
-  Sauce.findOne({ _id: req.params.id })
-    .then((sauces) => res.status(200).json(sauces))
-    console.log(sauces)
-    .catch(error => res.status(404).json({ error }));
-  };*/
-
 //get one sauce
 exports.getOneSauces = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
-    .then((sauces) => res.status(200).json(sauces))
+    .then((sauce) => res.status(200).json(sauce))
     .catch(error => res.status(404).json({ error }));
   };
 
