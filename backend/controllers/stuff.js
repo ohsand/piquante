@@ -5,11 +5,6 @@ const fs = require('fs');
 
 // creaate a new sauce
 exports.createSauces = (req, res, next) => {
-    /*console.log('enter here ');
-    console.log('req 1.1 ? ' + JSON.stringify(req.body));
-    console.log('red ?' + req.body.sauce);*/
-
-    
      const saucesObject = JSON.parse(req.body.sauce);
     console.log(saucesObject);
     delete saucesObject._id;
@@ -18,13 +13,18 @@ exports.createSauces = (req, res, next) => {
     const sauce = new Sauce({
       ...saucesObject,
       userId: req.auth.userId,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+      likes: 0,
+      dislikes: 0,
+      usersLiked: [],
+      usersDisLiked: [],
     });
 
     sauce.save()
     .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
     .catch(error => { res.status(400).json( { error })})
   };
+  
 
 // edit an existing sauce
 exports.modifySauces = (req, res, next) => {
