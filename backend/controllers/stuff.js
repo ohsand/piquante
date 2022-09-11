@@ -27,29 +27,18 @@ exports.createSauces = (req, res, next) => {
   
 
 // edit an existing sauce
-exports.modifySauces = (req, res, next) => {
-  /*sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-    .catch(error => res.status(400).json({ error }));*/
-    const sauceObject = req.file ? {
-      ...JSON.parse(req.body.sauces),
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : {...req.body};
-
-    delete sauceObject.userId;
-    Sauce.findOne({_id: req.params.id})
-    .then((sauce) => {
-      if (sauce.userId != req.auth.userId) {
-        res.status(400).json({ message : "non autorisé" });
-      } else {
-        sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
-        .then(() => res.status(200).json({message : 'Objet mofidifié' }))
-        .catch(error => res.status(400).json({ error }));
-      }
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    })
+  exports.modifySauces = (req, res, next) => {
+ 
+    const sauceObject = req.file
+      ? {
+          ...JSON.parse(req.body.sauce),
+          imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+        }
+      : { ...req.body };
+  
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+      .then(res.status(200).json({ message: "Sauce modifiée" }))
+      .catch((error) => res.status(400).json({ error }));
   };
 
 //delete a sauce
