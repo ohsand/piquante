@@ -28,6 +28,9 @@ exports.createSauces = (req, res, next) => {
 
 // edit an existing sauce
   exports.modifySauces = (req, res, next) => {
+    if (sauces.userId != req.auth.userId) {
+      res.status(401).json({message: 'Not authorized'});
+  } else {
  
     const sauceObject = req.file
       ? {
@@ -37,9 +40,10 @@ exports.createSauces = (req, res, next) => {
       : { ...req.body };
   
     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+    
       .then(res.status(200).json({ message: "Sauce modifiée" }))
       .catch((error) => res.status(400).json({ error }));
-  };
+  }};
 
 //delete a sauce
 exports.deleteSauces = (req, res, next) => {
@@ -76,6 +80,7 @@ exports.getAllSauces = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
   };
 
+  //like dislike sauce
   exports.likeDislikeSauce = (req, res, next) => {
     const like = req.body.like;
     const userId = req.body.userId;
